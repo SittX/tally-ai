@@ -1,5 +1,7 @@
 "use client";
-import { SquareMenu } from "lucide-react";
+import menus, { TMenu } from "@/lib/menus.config";
+import { MenuIcon, XIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function DashboardNav() {
@@ -7,25 +9,25 @@ export default function DashboardNav() {
 
   return (
     <nav className="w-screen z-10 absolute bottom-5">
-      <div className="flex items-center justify-center w-20 mx-auto border border-white">
+      <div className="flex items-center justify-center max-w-xl mx-auto">
         <button
           className="btn btn-primary btn-sm"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          <SquareMenu size={24} />
+          {isOpen ? (
+            <XIcon size={24} className="transition-transform" />
+          ) : (
+            <MenuIcon size={24} className="transition-transform" />
+          )}
         </button>
       </div>
       {isOpen && (
-        <ul className="menu bg-base-200 border border-white absolute w-screen bottom-10">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <a>Item 2</a>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
+        <ul className="menu menu-lg bg-base-200 absolute mx-auto w-full rounded-md bottom-14 shadow-sm">
+          {menus.map((menu: TMenu) => (
+            <li key={menu.name}>
+              <Link href={menu.herf}>{menu.name}</Link>
+            </li>
+          ))}
         </ul>
       )}
     </nav>
