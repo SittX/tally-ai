@@ -1,40 +1,16 @@
-"use client";
-
 import { getAccountById } from "@/service/account.service";
-import { use } from "react";
-import AccountForm from "./AccountForm";
-import { accountUpdateAction } from "../_actions/account.action";
-import { TAccountCreate } from "@/database/schema/accounts";
+import AccountEditClient from "./AccountEditClient";
 
 interface AccountDetailsAsyncViewProps {
   params: Promise<{ id: string }>;
 }
 
-async function loadAccount(id: number) {
-  return getAccountById(id);
-}
-
-export default function AccountDetailsAsyncView({
+export default async function AccountDetailsAsyncView({
   params,
 }: AccountDetailsAsyncViewProps) {
-  const resolvedParams = use(params);
-  const accountId = Number(resolvedParams.id);
-  
-  const accountPromise = loadAccount(accountId);
-
-  return (
-    <AccountDetailsContent accountPromise={accountPromise} accountId={accountId} />
-  );
-}
-
-function AccountDetailsContent({
-  accountPromise,
-  accountId,
-}: {
-  accountPromise: Promise<any>;
-  accountId: number;
-}) {
-  const account = use(accountPromise);
+  const { id } = await params;
+  const accountId = Number(id);
+  const account = await getAccountById(accountId);
 
   if (!account) {
     return (
@@ -43,14 +19,6 @@ function AccountDetailsContent({
       </div>
     );
   }
-
-  const handleUpdateAction = async (data: TAccountCreate) => {
-    return accountUpdateAction({ ...data, id: accountId });
-  };
-
-  const handleUpdateSuccess = async () => {
-    window.location.href = "/dashboard/accounts";
-  };
 
   return (
     <div className="space-y-6">
@@ -63,12 +31,7 @@ function AccountDetailsContent({
 
       <div className="card bg-base-100 shadow-sm">
         <div className="card-body">
-          <AccountForm
-            onSuccess={handleUpdateSuccess}
-            action={handleUpdateAction}
-            initialData={account}
-            isEditing={true}
-          />
+          <AccountEditClient accountId={accountId} initialData={account} />
         </div>
       </div>
     </div>
