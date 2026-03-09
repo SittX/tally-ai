@@ -16,61 +16,56 @@ export default function DashboardNav() {
 
   return (
     <>
-      {/* Sticky Footer Navigation - Mobile Optimized */}
+      {/* Mobile: Sticky Footer Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-base-100 border-t border-base-200 md:hidden">
-        <div className="flex items-center justify-around gap-0 px-2 py-2">
+        <div className="flex items-end justify-around px-1 py-2 h-20 gap-1">
           {sortedMenus.map((menu: TMenu) => {
             const Icon = menu.icon;
-            const active = isActive(menu.herf);
+            const active = isActive(menu.href);
             return (
               <Link
                 key={menu.name}
-                href={menu.herf}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-fit ${
+                href={menu.href}
+                className={`flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded-md flex-1 transition-all duration-200 ${
                   active
-                    ? "text-primary bg-primary/10"
-                    : "text-base-content/60 hover:text-base-content hover:bg-base-200"
+                    ? "text-primary bg-primary/10 font-semibold"
+                    : "text-base-content/50 hover:text-base-content hover:bg-base-200"
                 }`}
-                title={menu.name}
+                aria-current={active ? "page" : undefined}
               >
-                <Icon size={24} strokeWidth={1.5} />
-                <span className="text-xs font-medium">{menu.name}</span>
-                {menu.badge && (
-                  <span className="badge badge-xs badge-primary">
-                    {menu.badge}
-                  </span>
-                )}
+                <Icon size={22} strokeWidth={1.5} className="flex-shrink-0" />
+                <span className="text-[10px] leading-none text-center line-clamp-1">
+                  {menu.name}
+                </span>
               </Link>
             );
           })}
         </div>
       </nav>
 
-      {/* Desktop Navigation - Hidden on Mobile */}
-      <nav className="hidden md:flex sticky top-0 z-40 bg-base-100 border-b border-base-200">
-        <div className="w-full px-6 py-4 flex items-center gap-2">
-          <h1 className="text-xl font-bold mr-auto">Dashboard</h1>
-          <div className="flex items-center gap-2">
+      {/* Desktop: Horizontal Top Navigation */}
+      <nav className="hidden md:block sticky top-0 z-40 bg-base-100 border-b border-base-200 w-full">
+        <div className="px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <span className="text-lg font-bold">Dashboard</span>
+          </div>
+          <div className="flex items-center gap-1">
             {sortedMenus.map((menu: TMenu) => {
               const Icon = menu.icon;
-              const active = isActive(menu.herf);
+              const active = isActive(menu.href);
               return (
                 <Link
                   key={menu.name}
-                  href={menu.herf}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  href={menu.href}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 ${
                     active
-                      ? "text-primary bg-primary/10"
+                      ? "text-primary bg-primary/10 font-semibold"
                       : "text-base-content/60 hover:text-base-content hover:bg-base-200"
                   }`}
+                  aria-current={active ? "page" : undefined}
                 >
                   <Icon size={18} strokeWidth={1.5} />
-                  <span className="text-sm font-medium">{menu.name}</span>
-                  {menu.badge && (
-                    <span className="badge badge-xs badge-primary">
-                      {menu.badge}
-                    </span>
-                  )}
+                  <span className="text-sm">{menu.name}</span>
                 </Link>
               );
             })}
@@ -78,7 +73,7 @@ export default function DashboardNav() {
         </div>
       </nav>
 
-      {/* Spacer for Mobile - Prevents content overlap with fixed footer */}
+      {/* Mobile: Bottom Spacer for Fixed Footer */}
       <div className="h-20 md:hidden" />
     </>
   );

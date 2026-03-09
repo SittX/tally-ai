@@ -28,12 +28,12 @@ export default function DashboardLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen bg-base-300 flex flex-col md:flex-row">
-          <DashboardNav />
-          <main className="flex-1 w-full md:overflow-y-auto">
-            <div className="p-4">{children}</div>
-          </main>
-        </div>
+        <DashboardNav />
+        <main className="min-h-screen bg-base-300 pb-20 md:pb-0">
+          <div className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-6">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );
