@@ -6,8 +6,11 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-xl">All Accounts</h1>
-        <Link href={"/dashboard/accounts/new"}>
-          <button className="btn btn-primary btn-sm">Create New Account</button>
+        <Link
+          href="/dashboard/accounts/new"
+          className="btn btn-primary btn-sm"
+        >
+          Create New Account
         </Link>
       </div>
       <AccountListSection />
