@@ -1,85 +1,8 @@
 "use client";
 
 import { Clock, LogIn, Edit3, Plus } from "lucide-react";
-
-interface Activity {
-  id: string;
-  accountName: string;
-  type: "login" | "update" | "create" | "sync";
-  description: string;
-  timestamp: Date;
-  details?: string;
-}
-
-// Mock activity data for the activity page
-const getMockActivityData = (): Activity[] => {
-  return [
-    {
-      id: "1",
-      accountName: "OpenAI Account",
-      type: "sync",
-      description: "Quota synchronized",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-      details: "Monthly quota reset completed",
-    },
-    {
-      id: "2",
-      accountName: "Gemini Account",
-      type: "login",
-      description: "Account accessed",
-      timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
-      details: "Successful connection established",
-    },
-    {
-      id: "3",
-      accountName: "Cursor Account",
-      type: "update",
-      description: "Details updated",
-      timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-      details: "Subscription tier changed to Pro",
-    },
-    {
-      id: "4",
-      accountName: "OpenAI Account",
-      type: "login",
-      description: "Account accessed",
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-      details: "Last successful login",
-    },
-    {
-      id: "5",
-      accountName: "Gemini Account",
-      type: "update",
-      description: "Settings modified",
-      timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-      details: "API rate limits adjusted",
-    },
-    {
-      id: "6",
-      accountName: "Cursor Account",
-      type: "create",
-      description: "Account created",
-      timestamp: new Date("2024-01-15"),
-      details: "Initial account setup completed",
-    },
-    {
-      id: "7",
-      accountName: "Gemini Account",
-      type: "create",
-      description: "Account created",
-      timestamp: new Date("2024-01-10"),
-      details: "Account registered and verified",
-    },
-    {
-      id: "8",
-      accountName: "OpenAI Account",
-      type: "create",
-      description: "Account created",
-      timestamp: new Date("2024-01-05"),
-      details: "Initial setup and configuration",
-    },
-  ];
-};
+import { Activity, getMockActivityData } from "../_lib/activity.utils";
+import { useEffect, useState } from "react";
 
 const getActivityIcon = (type: Activity["type"]) => {
   switch (type) {
@@ -131,14 +54,34 @@ const formatRelativeTime = (date: Date) => {
 };
 
 export default function ActivityList() {
-  const activities = getMockActivityData();
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setActivities(getMockActivityData());
+    setIsLoaded(true);
+  }, []);
+
+  if (!isLoaded) {
+    return (
+      <div className="card bg-base-100 shadow-sm border border-base-200">
+        <div className="card-body">
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-16 bg-base-200 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="card bg-base-100 shadow-sm border border-base-200">
       <div className="card-body space-y-4">
         {activities.length > 0 ? (
           <div className="space-y-3">
-            {activities.map((activity, index) => (
+            {activities.map((activity) => (
               <div
                 key={activity.id}
                 className="flex gap-4 pb-3 last:pb-0 border-b border-base-200 last:border-b-0"

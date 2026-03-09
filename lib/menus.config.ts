@@ -3,6 +3,7 @@ import {
   Settings,
   User,
   CreditCard,
+  Activity,
   LucideIcon,
 } from "lucide-react";
 
@@ -28,16 +29,22 @@ const menus: TMenu[] = [
     order: 1,
   },
   {
+    name: "Activity",
+    href: "/dashboard/activity",
+    icon: Activity,
+    order: 2,
+  },
+  {
     name: "Profile",
     href: "/dashboard/profile",
     icon: User,
-    order: 2,
+    order: 3,
   },
   {
     name: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
-    order: 3,
+    order: 4,
   },
 ];
 

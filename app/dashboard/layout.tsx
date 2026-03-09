@@ -30,7 +30,7 @@ export default function DashboardLayout({
       >
         <DashboardNav />
         <main className="min-h-screen bg-base-300 pb-20 md:pb-0">
-          <div className="max-w-7xl mx-auto px-4 py-0 md:px-6 md:py-6">
+          <div className="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-6">
             {children}
           </div>
         </main>
