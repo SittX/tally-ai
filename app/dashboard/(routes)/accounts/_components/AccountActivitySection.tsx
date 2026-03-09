@@ -1,4 +1,5 @@
 import { Clock, LogIn, Edit3, Plus } from "lucide-react";
+import Link from "next/link";
 
 interface AccountActivitySectionProps {
   accountId: number;
@@ -157,9 +158,12 @@ export default function AccountActivitySection({
 
         {activities.length > 0 && (
           <div className="pt-3 border-t border-base-200">
-            <button className="btn btn-ghost btn-sm btn-block text-xs">
+            <Link
+              href="/dashboard/activity"
+              className="btn btn-ghost btn-sm btn-block text-xs"
+            >
               View All Activity
-            </button>
+            </Link>
           </div>
         )}
       </div>
