@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AccountDetailsView from "../../_components/AccountDetailsView";
+import AccountDetailsAsyncView from "../../_components/AccountDetailsView";
 
 type props = {
   params: Promise<{ id: string }>;
@@ -12,7 +12,7 @@ export default async function AccountDetailsPage({ params }: props) {
         <div>
           <h1 className="text-xl font-semibold">View Account Details</h1>
         </div>
-        <AccountDetailsView props={params} />
+        <AccountDetailsAsyncView props={params} />
       </div>
     </Suspense>
   );
