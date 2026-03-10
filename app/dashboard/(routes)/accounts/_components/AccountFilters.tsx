@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { TAccount } from "@/database/schema/accounts";
 import AccountCard from "@/app/dashboard/_components/AccountCard";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 
 interface AccountFiltersProps {
   providers: string[];
@@ -14,19 +14,17 @@ export default function AccountFilters({
   providers,
   accounts,
 }: AccountFiltersProps) {
-  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"name" | "provider" | "recent">("name");
+  const [sortBy, setSortBy] = useState<"name" | "provider" | "recent">("recent");
 
   // Filter and sort accounts
   const filteredAccounts = useMemo(() => {
     let filtered = accounts;
 
     // Apply provider filter
-    if (selectedProviders.length > 0) {
-      filtered = filtered.filter((acc) =>
-        selectedProviders.includes(acc.provider)
-      );
+    if (selectedProvider) {
+      filtered = filtered.filter((acc) => acc.provider === selectedProvider);
     }
 
     // Apply search filter
@@ -35,8 +33,7 @@ export default function AccountFilters({
       filtered = filtered.filter(
         (acc) =>
           acc.accountLabel.toLowerCase().includes(query) ||
-          acc.email.toLowerCase().includes(query) ||
-          acc.provider.toLowerCase().includes(query)
+          acc.email.toLowerCase().includes(query)
       );
     }
 
@@ -54,112 +51,134 @@ export default function AccountFilters({
     }
 
     return sorted;
-  }, [accounts, selectedProviders, searchQuery, sortBy]);
-
-  const toggleProvider = (provider: string) => {
-    setSelectedProviders((prev) =>
-      prev.includes(provider)
-        ? prev.filter((p) => p !== provider)
-        : [...prev, provider]
-    );
-  };
+  }, [accounts, selectedProvider, searchQuery, sortBy]);
 
   const clearFilters = () => {
-    setSelectedProviders([]);
+    setSelectedProvider("");
     setSearchQuery("");
   };
 
-  const hasActiveFilters =
-    selectedProviders.length > 0 || searchQuery.trim() !== "";
+  const hasActiveFilters = selectedProvider !== "" || searchQuery.trim() !== "";
 
   return (
     <div className="space-y-6">
-      {/* Filter Controls */}
-      <div className="space-y-4">
-        {/* Search Bar */}
-        <div className="form-control">
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Search by account name, email, or provider..."
-              className="input input-bordered flex-1"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="btn btn-ghost btn-square"
-                aria-label="Clear search"
-              >
-                <X size={18} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Filter Chips */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          {/* Provider Filter */}
-          <div className="flex-1">
-            <label className="text-sm font-medium text-base-content/70 mb-2 block">
-              Providers
+      {/* Filter Section */}
+      <div className="card bg-base-100 shadow-sm border border-base-200">
+        <div className="card-body space-y-4">
+          {/* Search Bar */}
+          <div className="form-control">
+            <label className="text-sm font-semibold text-base-content mb-2">
+              Search Accounts
             </label>
-            <div className="flex flex-wrap gap-2">
-              {providers.map((provider) => (
+            <div className="input-group">
+              <span className="bg-base-200">
+                <Search size={18} className="text-base-content/50" />
+              </span>
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                className="input input-bordered flex-1"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
                 <button
-                  key={provider}
-                  onClick={() => toggleProvider(provider)}
-                  className={`badge badge-lg gap-2 cursor-pointer transition-all ${
-                    selectedProviders.includes(provider)
-                      ? "badge-primary"
-                      : "badge-outline"
-                  }`}
+                  onClick={() => setSearchQuery("")}
+                  className="btn btn-ghost btn-square"
+                  aria-label="Clear search"
+                  type="button"
                 >
-                  {provider}
-                  {selectedProviders.includes(provider) && (
-                    <X size={14} strokeWidth={3} />
-                  )}
+                  <X size={18} />
                 </button>
-              ))}
+              )}
             </div>
           </div>
 
-          {/* Sort Dropdown */}
-          <div className="flex-1">
-            <label className="text-sm font-medium text-base-content/70 mb-2 block">
-              Sort by
-            </label>
-            <select
-              value={sortBy}
-              onChange={(e) =>
-                setSortBy(e.target.value as "name" | "provider" | "recent")
-              }
-              className="select select-bordered w-full"
-            >
-              <option value="name">Account Name</option>
-              <option value="provider">Provider</option>
-              <option value="recent">Recently Added</option>
-            </select>
-          </div>
-        </div>
+          {/* Filter Controls */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Provider Dropdown */}
+            <div className="form-control">
+              <label className="text-sm font-semibold text-base-content mb-2">
+                Filter by Provider
+              </label>
+              <div className="dropdown dropdown-end w-full">
+                <button
+                  tabIndex={0}
+                  className="btn btn-outline w-full gap-2 justify-between"
+                  type="button"
+                >
+                  <span>
+                    {selectedProvider || "All Providers"}
+                  </span>
+                  <ChevronDown size={18} />
+                </button>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full border border-base-200"
+                >
+                  <li key="all">
+                    <button
+                      onClick={() => setSelectedProvider("")}
+                      className={selectedProvider === "" ? "active" : ""}
+                      type="button"
+                    >
+                      All Providers
+                    </button>
+                  </li>
+                  {providers.map((provider) => (
+                    <li key={provider}>
+                      <button
+                        onClick={() => setSelectedProvider(provider)}
+                        className={
+                          selectedProvider === provider ? "active" : ""
+                        }
+                        type="button"
+                      >
+                        {provider}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
-        {/* Clear Filters Button */}
-        {hasActiveFilters && (
-          <div className="flex justify-start">
-            <button
-              onClick={clearFilters}
-              className="btn btn-ghost btn-sm gap-2"
-            >
-              <X size={16} />
-              Clear Filters
-            </button>
+            {/* Sort Dropdown */}
+            <div className="form-control">
+              <label className="text-sm font-semibold text-base-content mb-2">
+                Sort by
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) =>
+                  setSortBy(e.target.value as "name" | "provider" | "recent")
+                }
+                className="select select-bordered w-full"
+              >
+                <option value="recent">Recently Added</option>
+                <option value="name">Account Name</option>
+                <option value="provider">Provider</option>
+              </select>
+            </div>
           </div>
-        )}
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <div className="pt-2 border-t border-base-200">
+              <button
+                onClick={clearFilters}
+                className="btn btn-ghost btn-sm gap-2"
+                type="button"
+              >
+                <X size={16} />
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Results Count */}
-      <div className="text-sm text-base-content/60">
+      <div className="text-sm text-base-content/60 px-1">
         {filteredAccounts.length > 0 ? (
           <p>
             Showing <span className="font-semibold">{filteredAccounts.length}</span> of{" "}
@@ -200,6 +219,7 @@ export default function AccountFilters({
               <button
                 onClick={clearFilters}
                 className="btn btn-outline btn-sm gap-2"
+                type="button"
               >
                 <X size={16} />
                 Clear Filters
