@@ -61,65 +61,59 @@ export default function AccountFilters({
   const hasActiveFilters = selectedProvider !== "" || searchQuery.trim() !== "";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filter Section */}
-      <div className="card bg-base-100 shadow-sm border border-base-200">
-        <div className="card-body space-y-4">
-          {/* Search Bar */}
-          <div className="form-control">
-            <label className="text-sm font-semibold text-base-content mb-2">
-              Search Accounts
-            </label>
-            <div className="input-group">
-              <span className="bg-base-200">
-                <Search size={18} className="text-base-content/50" />
-              </span>
-              <input
-                type="text"
-                placeholder="Search by name or email..."
-                className="input input-bordered flex-1"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="btn btn-ghost btn-square"
-                  aria-label="Clear search"
-                  type="button"
-                >
-                  <X size={18} />
-                </button>
-              )}
+      <div className="bg-base-100 border border-base-200 rounded-lg p-4">
+        <div className="space-y-3">
+          {/* Search and Filter Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Search Bar */}
+            <div className="sm:col-span-1">
+              <div className="input-group input-group-sm">
+                <span className="bg-base-200">
+                  <Search size={16} className="text-base-content/50" />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="input input-bordered input-sm flex-1"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="btn btn-ghost btn-xs"
+                    aria-label="Clear search"
+                    type="button"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Filter Controls */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Provider Dropdown */}
-            <div className="form-control">
-              <label className="text-sm font-semibold text-base-content mb-2">
-                Filter by Provider
-              </label>
+            <div className="sm:col-span-1">
               <div className="dropdown dropdown-end w-full">
                 <button
                   tabIndex={0}
-                  className="btn btn-outline w-full gap-2 justify-between"
+                  className="btn btn-outline btn-sm w-full gap-2 justify-between"
                   type="button"
                 >
-                  <span>
+                  <span className="truncate">
                     {selectedProvider || "All Providers"}
                   </span>
-                  <ChevronDown size={18} />
+                  <ChevronDown size={16} className="flex-shrink-0" />
                 </button>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full border border-base-200"
+                  className="dropdown-content z-[1] menu menu-compact p-2 shadow bg-base-100 rounded-box w-full border border-base-200"
                 >
                   <li key="all">
                     <button
                       onClick={() => setSelectedProvider("")}
-                      className={selectedProvider === "" ? "active" : ""}
+                      className={`text-sm ${selectedProvider === "" ? "active" : ""}`}
                       type="button"
                     >
                       All Providers
@@ -129,9 +123,9 @@ export default function AccountFilters({
                     <li key={provider}>
                       <button
                         onClick={() => setSelectedProvider(provider)}
-                        className={
+                        className={`text-sm ${
                           selectedProvider === provider ? "active" : ""
-                        }
+                        }`}
                         type="button"
                       >
                         {provider}
@@ -143,34 +137,31 @@ export default function AccountFilters({
             </div>
 
             {/* Sort Dropdown */}
-            <div className="form-control">
-              <label className="text-sm font-semibold text-base-content mb-2">
-                Sort by
-              </label>
+            <div className="sm:col-span-1">
               <select
                 value={sortBy}
                 onChange={(e) =>
                   setSortBy(e.target.value as "name" | "provider" | "recent")
                 }
-                className="select select-bordered w-full"
+                className="select select-bordered select-sm w-full"
               >
-                <option value="recent">Recently Added</option>
-                <option value="name">Account Name</option>
-                <option value="provider">Provider</option>
+                <option value="recent">Recent</option>
+                <option value="name">By Name</option>
+                <option value="provider">By Provider</option>
               </select>
             </div>
           </div>
 
           {/* Clear Filters Button */}
           {hasActiveFilters && (
-            <div className="pt-2 border-t border-base-200">
+            <div className="flex justify-start pt-1">
               <button
                 onClick={clearFilters}
-                className="btn btn-ghost btn-sm gap-2"
+                className="btn btn-ghost btn-xs gap-1"
                 type="button"
               >
-                <X size={16} />
-                Clear Filters
+                <X size={14} />
+                Clear
               </button>
             </div>
           )}
@@ -178,20 +169,20 @@ export default function AccountFilters({
       </div>
 
       {/* Results Count */}
-      <div className="text-sm text-base-content/60 px-1">
+      <div className="text-xs text-base-content/60">
         {filteredAccounts.length > 0 ? (
           <p>
-            Showing <span className="font-semibold">{filteredAccounts.length}</span> of{" "}
+            <span className="font-semibold">{filteredAccounts.length}</span> of{" "}
             <span className="font-semibold">{accounts.length}</span> accounts
           </p>
         ) : (
-          <p>No accounts match your filters</p>
+          <p>No accounts match filters</p>
         )}
       </div>
 
       {/* Accounts Grid */}
       {filteredAccounts.length > 0 ? (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredAccounts.map((account) => (
             <AccountCard
               key={account.id}
@@ -205,16 +196,14 @@ export default function AccountFilters({
           ))}
         </div>
       ) : (
-        <div className="card bg-base-100 shadow-sm border border-base-200">
-          <div className="card-body flex flex-col items-center justify-center gap-4 py-12">
-            <div className="text-center">
-              <p className="text-lg font-semibold text-base-content/70">
-                No accounts found
-              </p>
-              <p className="text-sm text-base-content/50 mt-1">
-                Try adjusting your filters or search query
-              </p>
-            </div>
+        <div className="bg-base-100 border border-base-200 rounded-lg p-8">
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
+            <p className="font-semibold text-base-content/70">
+              No accounts found
+            </p>
+            <p className="text-sm text-base-content/50">
+              Try adjusting your filters or search
+            </p>
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
