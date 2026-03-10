@@ -1,10 +1,18 @@
 import db from "@/database";
-import { aiProviderAccounts, TAccount } from "@/database/schema/accounts";
+import { AccountStatisticsSchema, aiProviderAccounts, TAccount, TAccountStatistics } from "@/database/schema/accounts";
 import { eq } from "drizzle-orm";
 
 export async function getAllAccounts(): Promise<TAccount[]> {
   "use cache";
   return db.select().from(aiProviderAccounts);
+}
+
+export async function getAccountStatistics(): Promise<TAccountStatistics> {
+  const accounts = await getAllAccounts();
+  return AccountStatisticsSchema.parse({
+    activeAccounts: accounts.filter((account) => account.status === "active").length,
+    inactiveAccounts: accounts.filter((account) => account.status === "inactive").length,
+  });
 }
 
 export async function getAccountById(id: number): Promise<TAccount> {

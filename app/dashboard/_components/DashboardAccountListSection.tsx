@@ -4,10 +4,10 @@ import Link from "next/link";
 import AccountCard from "./AccountCard";
 
 // Server component - handles data fetching
-export default async function AccountListSection() {
+export default async function DashboardAccountListSection() {
   "use cache";
   const accounts = await getAllAccounts();
-  
+
   return (
     <div className="flex flex-col lg:flex-row lg:flex-wrap">
       {accounts.length > 0 &&
@@ -18,8 +18,8 @@ export default async function AccountListSection() {
             accountLabel={account.accountLabel}
             email={account.email}
             provider={account.provider}
-            subscriptionTier={account.subscriptionTier}
-            status={account.status}
+            subscriptionTier={account.subscriptionTier ?? undefined}
+            status={account.status === "active"}
           />
         ))}
       {accounts.length === 0 && (

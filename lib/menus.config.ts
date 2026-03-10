@@ -35,16 +35,10 @@ const menus: TMenu[] = [
     order: 2,
   },
   {
-    name: "Profile",
-    href: "/dashboard/profile",
-    icon: User,
-    order: 3,
-  },
-  {
     name: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
-    order: 4,
+    order: 3,
   },
 ];
 

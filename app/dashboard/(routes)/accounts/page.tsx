@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getAllAccounts } from "@/service/account.service";
-import AccountFilters from "../_components/AccountFilters";
 import AccountCard from "@/app/dashboard/_components/AccountCard";
 import { Plus } from "lucide-react";
+import AccountFilters from "./_components/AccountFilters";
 
 export const metadata = {
   title: "Accounts - Dashboard",
@@ -11,10 +11,10 @@ export const metadata = {
 
 export default async function AccountsPage() {
   const accounts = await getAllAccounts();
-  
+
   // Extract unique providers for filter options
   const providers = Array.from(
-    new Set(accounts.map((acc) => acc.provider).filter(Boolean))
+    new Set(accounts.map((acc) => acc.provider).filter(Boolean)),
   ).sort();
 
   return (
@@ -27,10 +27,7 @@ export default async function AccountsPage() {
             Manage your AI provider accounts in one place
           </p>
         </div>
-        <Link
-          href="/dashboard/accounts/new"
-          className="btn btn-primary gap-2"
-        >
+        <Link href="/dashboard/accounts/new" className="btn btn-primary gap-2">
           <Plus size={18} />
           New Account
         </Link>

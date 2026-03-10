@@ -48,3 +48,10 @@ export const AccountCreateSchema = createInsertSchema(
     .nonoptional({ error: "Provider cannot be empty" }),
 });
 export type TAccountCreate = z.infer<typeof AccountCreateSchema>;
+
+
+export const AccountStatisticsSchema = z.object({
+  activeAccounts: z.number(),
+  inactiveAccounts: z.number(),
+});
+export type TAccountStatistics = z.infer<typeof AccountStatisticsSchema>;
