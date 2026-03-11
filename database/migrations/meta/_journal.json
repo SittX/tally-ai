@@ -15,6 +15,13 @@
       "when": 1772889231097,
       "tag": "20260307131351_tan_black_cat",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773212806555,
+      "tag": "20260311070646_quick_rhino",
+      "breakpoints": true
     }
   ]
 }

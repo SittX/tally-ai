@@ -1,8 +1,12 @@
 "use client";
 
 import { Mail, AlertCircle } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { AccountCreateSchema, TAccountCreate, TAccount } from "@/database/schema/accounts";
+import { useForm, type Resolver } from "react-hook-form";
+import {
+  AccountCreateSchema,
+  TAccountCreate,
+  TAccount,
+} from "@/database/schema/accounts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 
@@ -29,15 +33,20 @@ export default function AccountForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<TAccountCreate>({
-    resolver: zodResolver(AccountCreateSchema),
-    defaultValues: initialData ? {
-      accountLabel: initialData.accountLabel,
-      email: initialData.email,
-      provider: initialData.provider,
-      subscriptionTier: initialData.subscriptionTier || undefined,
-      quotaType: initialData.quotaType || undefined,
-    } : undefined,
+    resolver: zodResolver(
+      AccountCreateSchema,
+    ) as unknown as Resolver<TAccountCreate>,
+    defaultValues: initialData
+      ? {
+          accountLabel: initialData.accountLabel,
+          email: initialData.email,
+          provider: initialData.provider,
+          subscriptionTier: initialData.subscriptionTier || undefined,
+          quotaType: initialData.quotaType || undefined,
+        }
+      : undefined,
   });
 
   const onSubmit = async (data: TAccountCreate) => {
@@ -45,6 +54,7 @@ export default function AccountForm({
       setError(null);
       await action(data);
       onSuccess();
+      reset();
     } catch (err) {
       setError("Failed to save account. Please try again.");
       console.error(err);
@@ -62,7 +72,7 @@ export default function AccountForm({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Account Label */}
-        <div className="form-control">
+        <div className="flex flex-col gap-2">
           <label className="label">
             <span className="label-text font-medium">Account Label</span>
           </label>
@@ -84,13 +94,15 @@ export default function AccountForm({
         </div>
 
         {/* Email */}
-        <div className="form-control">
+        <div className="flex flex-col gap-2">
           <label className="label">
             <span className="label-text font-medium">Email</span>
           </label>
-          <label className={`input input-bordered flex items-center gap-2 ${
-            errors.email ? "input-error" : ""
-          }`}>
+          <label
+            className={`input input-bordered flex items-center gap-2 ${
+              errors.email ? "input-error" : ""
+            }`}
+          >
             <Mail size={18} className="opacity-60" />
             <input
               type="email"
@@ -109,7 +121,7 @@ export default function AccountForm({
         </div>
 
         {/* Provider */}
-        <div className="form-control">
+        <div className="flex flex-col gap-2">
           <label className="label">
             <span className="label-text font-medium">Provider</span>
           </label>
@@ -119,7 +131,9 @@ export default function AccountForm({
             }`}
             {...register("provider")}
           >
-            <option disabled value="">Select a provider</option>
+            <option disabled value="">
+              Select a provider
+            </option>
             {PROVIDERS.map((provider) => (
               <option key={provider} value={provider}>
                 {provider}
@@ -136,10 +150,12 @@ export default function AccountForm({
         </div>
 
         {/* Subscription Tier */}
-        <div className="form-control">
+        <div className="flex flex-col gap-2">
           <label className="label">
             <span className="label-text font-medium">Subscription Tier</span>
-            <span className="label-text-alt text-base-content/50">Optional</span>
+            <span className="label-text-alt text-base-content/50">
+              Optional
+            </span>
           </label>
           <select
             className={`select select-bordered ${
@@ -164,10 +180,12 @@ export default function AccountForm({
         </div>
 
         {/* Quota Type */}
-        <div className="form-control">
+        <div className="flex flex-col gap-2">
           <label className="label">
             <span className="label-text font-medium">Quota Type</span>
-            <span className="label-text-alt text-base-content/50">Optional</span>
+            <span className="label-text-alt text-base-content/50">
+              Optional
+            </span>
           </label>
           <select
             className={`select select-bordered ${
@@ -192,8 +210,7 @@ export default function AccountForm({
         </div>
       </div>
 
-      {/* Form Actions */}
-      <div className="flex justify-end gap-3 pt-4 border-t">
+      <div className="flex justify-end gap-3 pt-4">
         <button
           type="button"
           className="btn btn-ghost"

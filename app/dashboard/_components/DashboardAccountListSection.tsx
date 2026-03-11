@@ -9,7 +9,7 @@ export default async function DashboardAccountListSection() {
   const accounts = await getAllAccounts();
 
   return (
-    <div className="flex flex-col lg:flex-row lg:flex-wrap">
+    <div className="flex flex-col lg:flex-row lg:flex-wrap gap-4">
       {accounts.length > 0 &&
         accounts.map((account) => (
           <AccountCard

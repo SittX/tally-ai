@@ -1,7 +1,15 @@
 import { getAccountById } from "@/service/account.service";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Calendar, Mail, Package, Zap } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Calendar,
+  Mail,
+  Package,
+  Zap,
+} from "lucide-react";
 import AccountActivitySection from "./AccountActivitySection";
+import AccountDeleteButton from "./AccountDeleteButton";
 
 interface AccountDetailsServerProps {
   params: Promise<{ id: string }>;
@@ -34,10 +42,11 @@ export default async function AccountDetailsServer({
   const statusColor =
     account.status === "active" ? "badge-success" : "badge-warning";
 
-  const formattedCreatedDate = new Date(account.createdAt).toLocaleDateString(
-    "en-US",
-    { year: "numeric", month: "short", day: "numeric" }
-  );
+  const formattedCreatedDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
   return (
     <div className="space-y-6">
@@ -126,7 +135,9 @@ export default async function AccountDetailsServer({
                     <Calendar size={16} />
                     Created
                   </label>
-                  <p className="text-base font-medium">{formattedCreatedDate}</p>
+                  <p className="text-base font-medium">
+                    {formattedCreatedDate}
+                  </p>
                 </div>
 
                 {/* Expiration Date */}
@@ -136,11 +147,14 @@ export default async function AccountDetailsServer({
                   </label>
                   <p className="text-base font-medium">
                     {account.expiresAt
-                      ? new Date(account.expiresAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
+                      ? new Date(account.expiresAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )
                       : "No expiration"}
                   </p>
                 </div>
@@ -158,7 +172,7 @@ export default async function AccountDetailsServer({
           <div className="card bg-base-100 shadow-sm border border-base-200">
             <div className="card-body space-y-4">
               <h3 className="card-title text-base">Status Overview</h3>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-base-200/30 rounded-lg">
                   <span className="text-sm font-medium">Account Status</span>
@@ -175,7 +189,7 @@ export default async function AccountDetailsServer({
                     <p className="text-sm font-medium">
                       {new Date(account.quotaResetAt).toLocaleDateString(
                         "en-US",
-                        { month: "short", day: "numeric", year: "numeric" }
+                        { month: "short", day: "numeric", year: "numeric" },
                       )}
                     </p>
                   </div>
@@ -187,10 +201,11 @@ export default async function AccountDetailsServer({
                       Expiration Alert
                     </p>
                     <p className="text-sm font-medium">
-                      {new Date(account.expiresAt).toLocaleDateString(
-                        "en-US",
-                        { month: "short", day: "numeric", year: "numeric" }
-                      )}
+                      {new Date(account.expiresAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </p>
                   </div>
                 )}
@@ -202,12 +217,7 @@ export default async function AccountDetailsServer({
           <div className="card bg-base-100 shadow-sm border border-base-200">
             <div className="card-body space-y-2">
               <h3 className="card-title text-base">Quick Actions</h3>
-              <Link
-                href={`/dashboard/accounts/${accountId}/edit`}
-                className="btn btn-outline btn-sm btn-block"
-              >
-                Edit Account
-              </Link>
+              <AccountDeleteButton accountId={accountId} />
             </div>
           </div>
         </div>

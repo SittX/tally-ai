@@ -14,7 +14,7 @@ export const aiProviderAccounts = pgTable("ai_provider_accounts", {
   id: serial().primaryKey(),
   accountLabel: varchar("account_label", { length: 256 }).notNull(),
   provider: varchar("provider", { length: 256 }).notNull(),
-  email: varchar("email").unique().notNull(),
+  email: varchar("email").notNull(),
   subscriptionTier: varchar("subscription_tier", { length: 256 }),
   status: varchar("status").default("active"),
   expiresAt: timestamp("expires_at"),

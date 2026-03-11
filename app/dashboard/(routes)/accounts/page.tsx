@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getAllAccounts } from "@/service/account.service";
-import AccountCard from "@/app/dashboard/_components/AccountCard";
 import { Plus } from "lucide-react";
 import AccountFilters from "./_components/AccountFilters";
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import AccountForm from "../../_components/AccountForm";
 import accountCreateAction from "@/app/dashboard/(routes)/accounts/_actions/account.action";
+import AccountForm from "../_components/AccountForm";
 
 export default function AccountCreatePage() {
   const router = useRouter();

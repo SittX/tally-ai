@@ -33,7 +33,7 @@ export default function DashboardNav() {
                 }`}
                 aria-current={active ? "page" : undefined}
               >
-                <Icon size={22} strokeWidth={1.5} className="flex-shrink-0" />
+                <Icon size={22} strokeWidth={1.5} className="shrink-0" />
                 <span className="text-[10px] leading-none text-center line-clamp-1">
                   {menu.name}
                 </span>
@@ -72,9 +72,6 @@ export default function DashboardNav() {
           </div>
         </div>
       </nav>
-
-      {/* Mobile: Bottom Spacer for Fixed Footer */}
-      <div className="h-20 md:hidden" />
     </>
   );
 }

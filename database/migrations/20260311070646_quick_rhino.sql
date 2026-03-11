@@ -1,0 +1,1 @@
+ALTER TABLE "ai_provider_accounts" DROP CONSTRAINT "ai_provider_accounts_email_unique";

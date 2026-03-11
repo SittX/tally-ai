@@ -33,25 +33,25 @@ export default function AccountCard({
       onClick={handleCardClick}
     >
       <div className="card-body space-y-4">
-        <div className="flex flex-col md:flex-row gap-2 justify-start items-start md:items-center">
-          <div className="flex items-center justify-between w-full">
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-2 items-start">
             <h1 className="text-xl font-bold">{accountLabel}</h1>
-            <Link
-              href={`/dashboard/accounts/${id}/edit`}
-              className="btn btn-soft btn-sm"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Edit
-            </Link>
+            {provider && (
+              <div className="badge badge-soft badge-sm">
+                <p className="text-primary-content/50 font-semibold">
+                  {provider}
+                </p>
+              </div>
+            )}
           </div>
-          {provider && (
-            <div className="badge badge-soft badge-sm">
-              <p className="text-primary-content/50 font-semibold">
-                {provider}
-              </p>
-            </div>
-          )}
+
+          <Link href={`/dashboard/accounts/${id}/edit`}>
+            <button className="btn btn-soft btn-sm hidden md:block">
+              Edit
+            </button>
+          </Link>
         </div>
+
         <div className="flex flex-col gap-2">
           <p>{email}</p>
           <p>{subscriptionTier}</p>
