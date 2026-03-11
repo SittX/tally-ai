@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import DashboardNav from "@/app/dashboard/_components/DashboardNav";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,9 @@ export default function DashboardLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
-        <DashboardNav />
+        <Suspense fallback={null}>
+          <DashboardNav />
+        </Suspense>
         <main className="bg-base-300 flex-1 overflow-y-auto pb-24 md:pb-0">
           <div className="max-w-7xl mx-auto py-4 px-4">{children}</div>
         </main>

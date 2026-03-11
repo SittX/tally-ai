@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AccountEditServer from "../../../_components/AccountEditServer";
+import AccountEditServer from "../../_components/AccountEditServer";
 
 type Props = {
   params: Promise<{ id: string }>;
